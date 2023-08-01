@@ -14,8 +14,6 @@ for (let index = 0; index < allLi.length; index++) {
     li.push(index); 
 }
 
-console.log(li);
-
 const generateTemplate = (todo)=>{
     const html = `
     <li class="list-group-item d-flex justify-content-between align-items-center">
