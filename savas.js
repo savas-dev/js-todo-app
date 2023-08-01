@@ -10,6 +10,7 @@ const search = document.querySelector('.search input');
 
 //li.length = allLi.length
 
+// we catch and add all allLi elements to li[]
 for (let index = 0; index < allLi.length; index++) {
     li.push(index); 
 }
@@ -23,6 +24,7 @@ const generateTemplate = (todo)=>{
     `;
 
     list.innerHTML += html;
+    // we add todo li html to li[]
     li.push(todo);
     
     if(li.length > 0){
@@ -44,6 +46,7 @@ addForm.addEventListener('submit', e =>{
 list.addEventListener('click', e=>{
     if(e.target.classList.contains('delete')){
         e.target.parentElement.remove();
+        // we remove last index from li[]
         li.pop();
     }
 
