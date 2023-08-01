@@ -6,7 +6,19 @@ const noContent = document.querySelector('.no-content');
 const allLi = document.querySelectorAll('li');
 const li = [];
 const search = document.querySelector('.search input');
+const buttonClear = document.querySelector('.buttonClear');
+var liCount = localStorage.getItem('liCount');
 
+console.log(localStorage.getItem('liCount'));
+
+if(liCount <= 0){
+    console.log(localStorage.getItem('liCount', liCount));
+    noContent.classList.remove('d-none');
+}
+
+if(localStorage.getItem('html') != null){
+    list.innerHTML = localStorage.getItem('html');
+}
 
 //li.length = allLi.length
 
@@ -19,15 +31,19 @@ const generateTemplate = (todo)=>{
     const html = `
     <li class="list-group-item d-flex justify-content-between align-items-center">
         <span>${todo}</span>
-        <a class="delete"href="#"><img width="20" height="20" src="delete.png" alt="delete"></a>
+        <img class="delete" width="20" height="20" src="delete.png" alt="delete"></a>
     </li>
     `;
 
     list.innerHTML += html;
-    // we add todo li html to li[]
-    li.push(todo);
     
-    if(li.length > 0){
+    // we add todo li html to li[]
+    localStorage.setItem('html', list.innerHTML);
+    liCount++;
+    localStorage.setItem('liCount', liCount);
+    console.log(liCount);
+    
+    if(liCount > 0){
         noContent.classList.add('d-none');
     }
 }
@@ -46,13 +62,22 @@ addForm.addEventListener('submit', e =>{
 list.addEventListener('click', e=>{
     if(e.target.classList.contains('delete')){
         e.target.parentElement.remove();
+        localStorage.setItem('html', list.innerHTML);
         // we remove last index from li[]
-        li.pop();
+        if(liCount > 0){
+            liCount--;
+        }
+        localStorage.setItem('liCount', liCount);
+        console.log(liCount);
+
+
+        if(liCount <= 0){
+            noContent.classList.remove('d-none');
+        }
+
     }
 
-    if(li.length <= 0){
-        noContent.classList.remove('d-none');
-    }
+    
 
 })
 
@@ -69,4 +94,15 @@ const filterTodos = (term)=>{
 search.addEventListener('keyup', ()=>{
     const term = search.value.trim().toLowerCase();
     filterTodos(term);
+})
+
+buttonClear.addEventListener('click', e=>{
+    e.preventDefault();
+    list.innerHTML = '';
+    liCount = 0;
+    if(liCount <= 0){
+        noContent.classList.remove('d-none');
+    }
+    localStorage.clear();
+    console.log(liCount);
 })
